@@ -42,4 +42,4 @@ jobs:
 
       - name: Hint
         if: failure()
-        run: echo "If deploy still fails, click 'Download log' in this run and share the first error line above the assets hint."
+        run: echo "If deploy fails, paste the first ERROR line above the assets hint from the Deploy step logs."
