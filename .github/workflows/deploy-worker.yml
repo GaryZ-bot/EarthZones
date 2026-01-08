@@ -23,8 +23,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Deploy
-        run: npx wrangler deploy src/index.js --config wrangler.jsonc --no-bundle
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Debug (show files)
+        run: |
+          echo "pwd=$(pwd)"
+          ls -la
+          echo "--- src ---"
+          ls -la src
+          echo "--- wrangler.jsonc ---"
+          cat wrangler.jsonc
+          echo "--- wrangler version ---"
+          npx wrangler --version
+
+            - name: Deploy
+              run: npx wrangler deploy src/index.js --config wrangler.jsonc --log-level=debug
+              env:
+                CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Hint
+        if: failure()
+        run: echo "If deploy still fails, click 'Download log' in this run and share the first error line above the assets hint."
